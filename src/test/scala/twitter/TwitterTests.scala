@@ -1,6 +1,5 @@
 package twitter
 
-import models.UpdateTweetRequest
 import org.testng.annotations.{BeforeMethod, Test}
 import org.testng.Assert
 import twitter4j.{StatusUpdate, Twitter, TwitterFactory}
@@ -39,19 +38,46 @@ class TwitterTests(var cb: ConfigurationBuilder, var tf: TwitterFactory, var twi
   @Test
   def updateTweetTest() = {
     val r = scala.util.Random
+    // creating new tweet
     val status = twitter.updateStatus("TestTweet " + r.nextInt(9999999))
-    var statusUpdate = new StatusUpdate("UpdateTweet " + r.nextInt(9999999))
-    twitter.updateStatus(statusUpdate)
+    // to update tweet we need to create this object
+    var textForTweetToUpdate = "UpdateTweet " + r.nextInt(9999999)
+    var statusUpdate = new StatusUpdate(textForTweetToUpdate)
+    // and here we updating last added tweet
+    var updatedTweet = twitter.updateStatus(statusUpdate)
+    var updatedTweetText = updatedTweet.getText
+    // now we need to get updated tweet text and check it against our variable
+    Assert.assertEquals(textForTweetToUpdate, updatedTweetText, s"Expected text is: $textForTweetToUpdate, but actual text is: $updatedTweetText")
   }
 
   @Test
   def deleteTweetTest() = {
-
+    val r = scala.util.Random
+    // get current number of tweets
+    var initialNumberOfTweets = twitter.getHomeTimeline
+    // creating new tweet
+    val status = twitter.updateStatus("TestTweet " + r.nextInt(9999999))
+    // delete created tweet
+    twitter.destroyStatus(status.getId)
+    // number of tweets after we delete one
+    var currentNumberOfTweets = twitter.getHomeTimeline
+    Assert.assertEquals(initialNumberOfTweets, currentNumberOfTweets, s"Expected numdeb of tweets is: $initialNumberOfTweets, actual number of tweets is: $currentNumberOfTweets")
   }
 
   @Test
-  def retweetUpdatedTweet() = {
-
+  def retweetUpdatedTweetTest() = {
+    val r = scala.util.Random
+    // creating new tweet
+    val status = twitter.updateStatus("TestTweet " + r.nextInt(9999999))
+    // to update tweet we need to create this object
+    var textForTweetToUpdate = "UpdateTweet " + r.nextInt(9999999)
+    var statusUpdate = new StatusUpdate(textForTweetToUpdate)
+    // updating the latest tweet
+    var updatedTweet = twitter.updateStatus(statusUpdate)
+    // retweeting updated tweet
+    twitter.retweetStatus(updatedTweet.getId)
+    var numOfRetweets = twitter.getRetweets(updatedTweet.getId)
+    Assert.assertTrue(numOfRetweets.size() == 1)
   }
 
 }
