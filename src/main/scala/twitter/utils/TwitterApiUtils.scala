@@ -1,5 +1,6 @@
 package twitter.utils
 
+import twitter.data.AccessData
 import twitter4j.{Twitter, TwitterFactory}
 import twitter4j.conf.ConfigurationBuilder
 
@@ -9,17 +10,11 @@ class TwitterApiUtils {
 
   def createTwitterInstance: Unit = {
     val cb = new ConfigurationBuilder()
-    object Access{
-      val AccessToken = "token"
-      val AccessSecret = "access secret"
-      val ConsumerKey = "key"
-      val ConsumerSecret = "consumer secret"
-    }
     cb.setDebugEnabled(true)
-      .setOAuthConsumerKey(Access.ConsumerKey)
-      .setOAuthConsumerSecret(Access.ConsumerSecret)
-      .setOAuthAccessToken(Access.AccessToken)
-      .setOAuthAccessTokenSecret(Access.AccessSecret)
+      .setOAuthConsumerKey(AccessData.ConsumerKey)
+      .setOAuthConsumerSecret(AccessData.ConsumerSecret)
+      .setOAuthAccessToken(AccessData.AccessToken)
+      .setOAuthAccessTokenSecret(AccessData.AccessSecret)
     val tf = new TwitterFactory(cb.build())
     twitter = tf.getInstance()
   }
