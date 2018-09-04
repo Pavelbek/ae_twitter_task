@@ -3,8 +3,11 @@ package twitter.utils
 import twitter4j.{Twitter, TwitterFactory}
 import twitter4j.conf.ConfigurationBuilder
 
-object TwitterApiUtils {
-  def createTwitterInstance: Twitter = {
+class TwitterApiUtils {
+
+  var twitter: Twitter = _
+
+  def createTwitterInstance: Unit = {
     val cb = new ConfigurationBuilder()
     object Access{
       val AccessToken = "token"
@@ -18,8 +21,8 @@ object TwitterApiUtils {
       .setOAuthAccessToken(Access.AccessToken)
       .setOAuthAccessTokenSecret(Access.AccessSecret)
     val tf = new TwitterFactory(cb.build())
-    return tf.getInstance()
+    twitter = tf.getInstance()
   }
 
-  var twitter: Twitter = createTwitterInstance
+
 }

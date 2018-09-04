@@ -5,13 +5,15 @@ import twitter.utils.TwitterApiUtils
 import twitter4j.StatusUpdate
 
 class ApiTwitterTests extends FunSuite with Matchers with BeforeAndAfterAll{
+  var utils: TwitterApiUtils = _
 
   override def beforeAll() {
-    TwitterApiUtils.createTwitterInstance
+    var utils = new TwitterApiUtils
+    utils.createTwitterInstance
   }
 
   test("create tweet test"){
-    var twitter = TwitterApiUtils.twitter
+    var twitter = utils.twitter
     val r = scala.util.Random
     // get initial number of tweets
     var statuses = twitter.getHomeTimeline()
@@ -26,7 +28,7 @@ class ApiTwitterTests extends FunSuite with Matchers with BeforeAndAfterAll{
   }
 
   test("update tweet test") {
-    var twitter = TwitterApiUtils.twitter
+    var twitter = utils.twitter
     val r = scala.util.Random
     // creating new tweet
     val status = twitter.updateStatus("TestTweet " + r.nextInt(9999999))
@@ -41,7 +43,7 @@ class ApiTwitterTests extends FunSuite with Matchers with BeforeAndAfterAll{
   }
 
   test("delete tweet test"){
-    var twitter = TwitterApiUtils.twitter
+    var twitter = utils.twitter
     val r = scala.util.Random
     // get current number of tweets
     var initialNumberOfTweets = twitter.getHomeTimeline.size()
@@ -55,7 +57,7 @@ class ApiTwitterTests extends FunSuite with Matchers with BeforeAndAfterAll{
   }
 
   test("retweet updated tweet test"){
-    var twitter = TwitterApiUtils.twitter
+    var twitter = utils.twitter
     val r = scala.util.Random
     // creating new tweet
     val status = twitter.updateStatus("TestTweet " + r.nextInt(9999999))
