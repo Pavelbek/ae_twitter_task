@@ -7,6 +7,6 @@ scalaVersion := "2.12.1"
 
 libraryDependencies ++= Seq(
   "org.twitter4j" % "twitter4j-core" % "4.0.7",
-  "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "org.testng" % "testng" % "6.14.3" % Test
+  "org.scalatest" % "scalatest_2.12" % "3.0.5" % "test",
+  "org.scalactic" %% "scalactic" % "3.0.5"
 )
